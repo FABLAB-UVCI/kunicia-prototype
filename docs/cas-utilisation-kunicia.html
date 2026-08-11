@@ -1,0 +1,167 @@
+<title>Kunicia — Diagramme de cas d'utilisation</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --ink: #1a2e22;
+    --muted: #5f7a68;
+    --accent: #2f7d52;
+    --line-width: 2;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #10140f;
+      --surface: #1a2118;
+      --ink: #e6ede8;
+      --muted: #8ba695;
+      --accent: #5fbf85;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #10140f; --surface: #1a2118; --ink: #e6ede8; --muted: #8ba695; --accent: #5fbf85;
+  }
+  :root[data-theme="light"] {
+    --bg: #ffffff; --surface: #ffffff; --ink: #1a2e22; --muted: #5f7a68; --accent: #2f7d52;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    padding: clamp(20px, 4vw, 56px);
+  }
+  .page { max-width: 1040px; margin: 0 auto; }
+  .eyebrow {
+    font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--muted); margin: 0 0 6px 0;
+  }
+  h1 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(22px, 3vw, 30px); font-weight: 700;
+    margin: 0 0 10px 0; text-wrap: balance;
+  }
+  .caption {
+    font-family: Georgia, "Times New Roman", serif; font-style: italic;
+    font-size: 15px; color: var(--muted); max-width: 68ch; line-height: 1.5;
+    margin: 0 0 28px 0;
+  }
+  .diagram-frame {
+    overflow-x: auto; background: var(--surface); border-radius: 10px;
+    padding: 24px 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+  svg.uc { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+
+  .usecase { fill: var(--surface); stroke: var(--accent); stroke-width: var(--line-width); }
+  .usecase-label { font-size: 13px; fill: var(--ink); text-anchor: middle; }
+  .assoc { stroke: var(--muted); stroke-width: 1.4; fill: none; }
+  .actor-figure { stroke: var(--ink); stroke-width: 2; fill: none; stroke-linecap: round; }
+  .actor-label { font-size: 14px; font-weight: 700; fill: var(--ink); text-anchor: middle; }
+
+  footer { margin-top: 22px; font-size: 11.5px; color: var(--muted); }
+</style>
+
+<div class="page">
+  <p class="eyebrow">Kunicia — Note conceptuelle, annexe</p>
+  <h1>Diagramme de cas d'utilisation</h1>
+  <p class="caption">
+    Un seul acteur dans le système : l'éleveur (un compte = une ferme, pas de rôles multiples).
+    Les cas d'utilisation sont groupés par module fonctionnel, à l'exception du module
+    Alimentation/Commercial/Pilotage relié via un tronc commun pour la lisibilité du schéma.
+  </p>
+
+  <div class="diagram-frame">
+    <svg class="uc" viewBox="0 0 1000 960" role="img"
+         aria-label="Diagramme de cas d'utilisation Kunicia : l'acteur Éleveur relié à l'ensemble des actions possibles, groupées par module — Compte, Cheptel, Reproduction, Suivi et IA, Alimentation, Commercial, Pilotage.">
+
+      <!-- ============ ASSOCIATIONS (drawn first) ============ -->
+
+      <!-- actor -> column 1 (direct lines) -->
+      <path class="assoc" d="M130,460 L270,95" />
+      <path class="assoc" d="M130,460 L270,225" />
+      <path class="assoc" d="M130,460 L270,277" />
+      <path class="assoc" d="M130,460 L270,329" />
+      <path class="assoc" d="M130,460 L270,381" />
+      <path class="assoc" d="M130,460 L270,433" />
+      <path class="assoc" d="M130,460 L270,565" />
+      <path class="assoc" d="M130,460 L270,617" />
+      <path class="assoc" d="M130,460 L270,745" />
+      <path class="assoc" d="M130,460 L270,797" />
+      <path class="assoc" d="M130,460 L270,849" />
+
+      <!-- actor -> bus -> column 2 (shared trunk, avoids crossing column 1) -->
+      <path class="assoc" d="M130,460 L130,10 L760,10 L760,510" />
+
+      <!-- ============ ACTOR ============ -->
+      <g class="actor-figure">
+        <circle cx="130" cy="410" r="16" />
+        <line x1="130" y1="426" x2="130" y2="475" />
+        <line x1="100" y1="445" x2="160" y2="445" />
+        <line x1="130" y1="475" x2="105" y2="515" />
+        <line x1="130" y1="475" x2="155" y2="515" />
+      </g>
+      <text class="actor-label" x="130" y="540">Éleveur</text>
+
+      <!-- ============ COLUMN 1 ============ -->
+
+      <!-- Compte -->
+      <ellipse class="usecase" cx="400" cy="95" rx="130" ry="23" />
+      <text class="usecase-label" x="400" y="99">S'inscrire / se connecter</text>
+
+      <!-- Cheptel -->
+      <ellipse class="usecase" cx="400" cy="225" rx="130" ry="23" />
+      <text class="usecase-label" x="400" y="229">Enregistrer un lapin (unité ou lot)</text>
+      <ellipse class="usecase" cx="400" cy="277" rx="130" ry="23" />
+      <text class="usecase-label" x="400" y="281">Identifier un lapin après tatouage</text>
+      <ellipse class="usecase" cx="400" cy="329" rx="130" ry="23" />
+      <text class="usecase-label" x="400" y="326">Suivre un lapin</text>
+      <text class="usecase-label" x="400" y="340" style="font-size:11px" fill="var(--muted)">fiche, généalogie, mouvements</text>
+      <ellipse class="usecase" cx="400" cy="381" rx="130" ry="23" />
+      <text class="usecase-label" x="400" y="385">Gérer les cages (QR code)</text>
+      <ellipse class="usecase" cx="400" cy="433" rx="130" ry="23" />
+      <text class="usecase-label" x="400" y="437">Gérer les races</text>
+
+      <!-- Reproduction -->
+      <ellipse class="usecase" cx="400" cy="565" rx="130" ry="23" />
+      <text class="usecase-label" x="400" y="562">Proposer un accouplement</text>
+      <text class="usecase-label" x="400" y="576" style="font-size:11px" fill="var(--muted)">avec vérification de consanguinité</text>
+      <ellipse class="usecase" cx="400" cy="617" rx="130" ry="23" />
+      <text class="usecase-label" x="400" y="621">Confirmer un sevrage</text>
+
+      <!-- Suivi & IA -->
+      <ellipse class="usecase" cx="400" cy="745" rx="130" ry="23" />
+      <text class="usecase-label" x="400" y="749">Peser un lapin</text>
+      <ellipse class="usecase" cx="400" cy="797" rx="130" ry="23" />
+      <text class="usecase-label" x="400" y="801">Suivre la santé (vaccins, soins)</text>
+      <ellipse class="usecase" cx="400" cy="849" rx="130" ry="23" />
+      <text class="usecase-label" x="400" y="853">Obtenir une prédiction de poids</text>
+
+      <!-- ============ COLUMN 2 ============ -->
+
+      <!-- Alimentation -->
+      <ellipse class="usecase" cx="760" cy="95" rx="130" ry="23" />
+      <text class="usecase-label" x="760" y="99">Gérer les stocks d'aliment</text>
+      <ellipse class="usecase" cx="760" cy="147" rx="130" ry="23" />
+      <text class="usecase-label" x="760" y="151">Distribuer l'alimentation</text>
+
+      <!-- Commercial -->
+      <ellipse class="usecase" cx="760" cy="275" rx="130" ry="23" />
+      <text class="usecase-label" x="760" y="279">Gérer les clients</text>
+      <ellipse class="usecase" cx="760" cy="327" rx="130" ry="23" />
+      <text class="usecase-label" x="760" y="331">Vendre un lapin</text>
+      <ellipse class="usecase" cx="760" cy="379" rx="130" ry="23" />
+      <text class="usecase-label" x="760" y="383">Enregistrer une dépense</text>
+
+      <!-- Pilotage -->
+      <ellipse class="usecase" cx="760" cy="510" rx="130" ry="23" />
+      <text class="usecase-label" x="760" y="514">Consulter le tableau de bord</text>
+
+    </svg>
+  </div>
+
+  <footer>
+    Kunicia — plateforme d'aide à la décision pour l'élevage cunicole. Cas d'utilisation établis
+    à partir des modules backend (14 modules) et des pages du tableau de bord.
+  </footer>
+</div>

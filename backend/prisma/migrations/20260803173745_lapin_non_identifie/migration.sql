@@ -1,0 +1,11 @@
+-- DropForeignKey
+ALTER TABLE "Lapin" DROP CONSTRAINT "Lapin_raceId_fkey";
+
+-- AlterTable
+ALTER TABLE "Lapin" ADD COLUMN     "identifie" BOOLEAN NOT NULL DEFAULT true,
+ALTER COLUMN "sexe" DROP NOT NULL,
+ALTER COLUMN "dateNaissance" DROP NOT NULL,
+ALTER COLUMN "raceId" DROP NOT NULL;
+
+-- AddForeignKey
+ALTER TABLE "Lapin" ADD CONSTRAINT "Lapin_raceId_fkey" FOREIGN KEY ("raceId") REFERENCES "Race"("id") ON DELETE SET NULL ON UPDATE CASCADE;

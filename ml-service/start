@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# Démarre le service de prédiction IA. Génère les données et entraîne le
+# modèle au premier lancement seulement (si model/modele_poids.joblib
+# n'existe pas encore), puis lance le serveur FastAPI.
+set -euo pipefail
+cd "$(dirname "$0")"
+
+if [ ! -d "venv" ]; then
+  echo "Création de l'environnement virtuel..."
+  python3 -m venv venv
+fi
+
+source venv/bin/activate
+pip install -q -r requirements.txt
+
+if [ ! -f "model/modele_poids.joblib" ]; then
+  echo "Aucun modèle trouvé — génération des données et entraînement..."
+  python3 data/generate_synthetic_data.py
+  python3 train_model.py
+fi
+
+echo "Démarrage du service sur http://localhost:8000"
+exec uvicorn app.main:app --port 8000

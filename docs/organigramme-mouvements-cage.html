@@ -1,0 +1,194 @@
+<title>Kunicia — Organigramme mouvements de cage</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --ink: #1a2e22;
+    --muted: #5f7a68;
+    --accent: #2f7d52;
+    --alert: #b23a2e;
+    --line-width: 2.2;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #10140f; --surface: #1a2118; --ink: #e6ede8; --muted: #8ba695;
+      --accent: #5fbf85; --alert: #e2685a;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #10140f; --surface: #1a2118; --ink: #e6ede8; --muted: #8ba695;
+    --accent: #5fbf85; --alert: #e2685a;
+  }
+  :root[data-theme="light"] {
+    --bg: #ffffff; --surface: #ffffff; --ink: #1a2e22; --muted: #5f7a68;
+    --accent: #2f7d52; --alert: #b23a2e;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    padding: clamp(20px, 4vw, 56px);
+  }
+  .page { max-width: 1080px; margin: 0 auto; }
+  .eyebrow {
+    font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--muted); margin: 0 0 6px 0;
+  }
+  h1 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(22px, 3vw, 30px); font-weight: 700;
+    margin: 0 0 10px 0; text-wrap: balance;
+  }
+  .caption {
+    font-family: Georgia, "Times New Roman", serif; font-style: italic;
+    font-size: 15px; color: var(--muted); max-width: 66ch; line-height: 1.5;
+    margin: 0 0 28px 0;
+  }
+  .diagram-frame {
+    overflow-x: auto; background: var(--surface); border-radius: 10px;
+    padding: 20px 8px;
+  }
+  svg.flow { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+
+  .node-rect { fill: var(--surface); stroke: var(--accent); stroke-width: var(--line-width); }
+  .node-diamond { fill: var(--surface); stroke: var(--accent); stroke-width: var(--line-width); }
+  .node-diamond.alert { stroke: var(--alert); }
+  .node-rect.alert { stroke: var(--alert); }
+  .node-pill { fill: var(--accent); stroke: none; }
+  .node-pill.end { fill: var(--muted); }
+  .node-pill.alert { fill: var(--alert); }
+  .node-pill text { fill: var(--surface); }
+
+  .node-label { font-size: 13px; fill: var(--ink); text-anchor: middle; }
+  .node-label .sub { font-size: 11px; fill: var(--muted); }
+
+  .edge { fill: none; stroke: var(--accent); stroke-width: var(--line-width); }
+  .edge.alert { stroke: var(--alert); }
+  .edge-label { font-size: 12px; fill: var(--muted); text-anchor: middle; }
+  .edge-label.alert { fill: var(--alert); }
+  .edge-label-bg { fill: var(--surface); }
+
+  footer { margin-top: 22px; font-size: 11.5px; color: var(--muted); }
+</style>
+
+<div class="page">
+  <p class="eyebrow">Kunicia — Note conceptuelle, annexe</p>
+  <h1>Organigramme fonctionnel : mouvements de cage</h1>
+  <p class="caption">
+    Journal des déplacements d'un lapin (entrée en cage, décès, contrôle),
+    avec le blocage sur un lapin déjà sorti du cheptel et l'alerte de capacité,
+    non bloquante, lors d'une entrée en cage.
+  </p>
+
+  <div class="diagram-frame">
+    <svg class="flow" viewBox="0 0 1000 930" role="img"
+         aria-label="Organigramme des mouvements de cage dans Kunicia : un mouvement est rejeté si le lapin est déjà décédé ou vendu ; sinon, selon le type (contrôle, décès, ou entrée en cage), le statut du lapin est mis à jour, et une entrée en cage recalcule l'occupation de la cage avec une alerte non bloquante si la capacité est dépassée.">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)" />
+        </marker>
+        <marker id="arrow-alert" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--alert)" />
+        </marker>
+      </defs>
+
+      <!-- ============ EDGES ============ -->
+
+      <!-- start -> diamond1 -->
+      <path class="edge" d="M500,75 L500,113" marker-end="url(#arrow)" />
+
+      <!-- diamond1 -> alert box (Oui) -->
+      <path class="edge alert" d="M610,170 L680,170" marker-end="url(#arrow-alert)" />
+      <rect class="edge-label-bg" x="620" y="145" width="30" height="18" />
+      <text class="edge-label alert" x="635" y="158" text-anchor="start">Oui</text>
+
+      <!-- alert box -> fin rejeté -->
+      <path class="edge alert" d="M800,195 L800,243" marker-end="url(#arrow-alert)" />
+
+      <!-- diamond1 -> diamond2 (Non) -->
+      <path class="edge" d="M500,227 L500,283" marker-end="url(#arrow)" />
+      <rect class="edge-label-bg" x="510" y="245" width="34" height="18" />
+      <text class="edge-label" x="527" y="258" text-anchor="middle">Non</text>
+
+      <!-- diamond2 -> 3 columns -->
+      <path class="edge" d="M420,356 L145,458" marker-end="url(#arrow)" />
+      <rect class="edge-label-bg" x="185" y="398" width="82" height="18" />
+      <text class="edge-label" x="226" y="411">CONTRÔLE</text>
+
+      <path class="edge" d="M500,397 L385,458" marker-end="url(#arrow)" />
+      <rect class="edge-label-bg" x="390" y="415" width="60" height="18" />
+      <text class="edge-label" x="420" y="428">DÉCÈS</text>
+
+      <path class="edge" d="M580,356 L625,458" marker-end="url(#arrow)" />
+      <rect class="edge-label-bg" x="540" y="398" width="110" height="18" />
+      <text class="edge-label" x="595" y="411">ENTRÉE EN CAGE</text>
+
+      <!-- entree cage chain -->
+      <path class="edge" d="M630,528 L630,568" marker-end="url(#arrow)" />
+      <path class="edge" d="M630,634 L630,663" marker-end="url(#arrow)" />
+
+      <!-- diamond3 -> alert pill (Oui) -->
+      <path class="edge alert" d="M630,777 L630,828" marker-end="url(#arrow-alert)" />
+      <rect class="edge-label-bg" x="640" y="795" width="30" height="18" />
+      <text class="edge-label alert" x="655" y="808" text-anchor="start">Oui</text>
+
+      <!-- diamond3 -> fin pill (Non) -->
+      <path class="edge" d="M550,731 L410,828" marker-end="url(#arrow)" />
+      <rect class="edge-label-bg" x="440" y="775" width="34" height="18" />
+      <text class="edge-label" x="457" y="788" text-anchor="middle">Non</text>
+
+      <!-- ============ NODES ============ -->
+
+      <rect class="node-pill" x="380" y="25" width="240" height="50" rx="25" />
+      <text class="node-label" x="500" y="55" fill="var(--surface)">Début : mouvement demandé</text>
+
+      <polygon class="node-diamond alert" points="500,113 610,170 500,227 390,170" />
+      <text class="node-label" x="500" y="165">Lapin déjà décédé</text>
+      <text class="node-label sub" x="500" y="181">ou vendu ?</text>
+
+      <rect class="node-rect alert" x="680" y="145" width="240" height="50" rx="8" />
+      <text class="node-label" x="800" y="175">Mouvement bloqué</text>
+
+      <rect class="node-pill end" x="700" y="243" width="200" height="50" rx="25" />
+      <text class="node-label" x="800" y="273" fill="var(--surface)">Fin : rejeté</text>
+
+      <polygon class="node-diamond" points="500,283 610,340 500,397 390,340" />
+      <text class="node-label" x="500" y="335">Quel type de</text>
+      <text class="node-label sub" x="500" y="351">mouvement ?</text>
+
+      <!-- 3 columns -->
+      <rect class="node-rect" x="40" y="458" width="210" height="70" rx="8" />
+      <text class="node-label" x="145" y="486">Vérification simple</text>
+      <text class="node-label sub" x="145" y="503">aucun changement d'état</text>
+
+      <rect class="node-rect" x="280" y="458" width="210" height="70" rx="8" />
+      <text class="node-label" x="385" y="486">Statut → Décédé</text>
+      <text class="node-label sub" x="385" y="503">retiré de sa cage</text>
+
+      <rect class="node-rect" x="525" y="458" width="210" height="70" rx="8" />
+      <text class="node-label" x="630" y="486">Nouvelle cage attribuée</text>
+      <text class="node-label sub" x="630" y="503">cageActuelleId mis à jour</text>
+
+      <rect class="node-rect" x="525" y="568" width="210" height="66" rx="8" />
+      <text class="node-label" x="630" y="596">Recalcul de l'occupation</text>
+      <text class="node-label sub" x="630" y="613">de la cage</text>
+
+      <polygon class="node-diamond alert" points="630,663 730,720 630,777 530,720" />
+      <text class="node-label" x="630" y="715">Occupation &gt;</text>
+      <text class="node-label sub" x="630" y="731">capacité ?</text>
+
+      <rect class="node-pill alert" x="530" y="828" width="200" height="50" rx="25" />
+      <text class="node-label" x="630" y="858" fill="var(--surface)">Alerte capacité (non bloquante)</text>
+
+      <rect class="node-pill end" x="310" y="828" width="200" height="50" rx="25" />
+      <text class="node-label" x="410" y="858" fill="var(--surface)">Fin : cage mise à jour</text>
+
+    </svg>
+  </div>
+
+  <footer>
+    Kunicia — plateforme d'aide à la décision pour l'élevage cunicole. Organigramme établi à partir
+    du module backend MouvementLapin (journal d'événements, mise à jour dénormalisée du statut et de la cage actuelle).
+  </footer>
+</div>

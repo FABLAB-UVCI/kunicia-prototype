@@ -1,0 +1,9 @@
+node_modules
+.next
+lib/generated
+.git
+.env
+.env.*
+!.env.example
+tsconfig.tsbuildinfo
+public/uploads

@@ -1,0 +1,195 @@
+<title>Kunicia — Organigramme prédiction IA</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --ink: #1a2e22;
+    --muted: #5f7a68;
+    --accent: #2f7d52;
+    --alert: #b23a2e;
+    --line-width: 2.2;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #10140f; --surface: #1a2118; --ink: #e6ede8; --muted: #8ba695;
+      --accent: #5fbf85; --alert: #e2685a;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #10140f; --surface: #1a2118; --ink: #e6ede8; --muted: #8ba695;
+    --accent: #5fbf85; --alert: #e2685a;
+  }
+  :root[data-theme="light"] {
+    --bg: #ffffff; --surface: #ffffff; --ink: #1a2e22; --muted: #5f7a68;
+    --accent: #2f7d52; --alert: #b23a2e;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    padding: clamp(20px, 4vw, 56px);
+  }
+  .page { max-width: 980px; margin: 0 auto; }
+  .eyebrow {
+    font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--muted); margin: 0 0 6px 0;
+  }
+  h1 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(22px, 3vw, 30px); font-weight: 700;
+    margin: 0 0 10px 0; text-wrap: balance;
+  }
+  .caption {
+    font-family: Georgia, "Times New Roman", serif; font-style: italic;
+    font-size: 15px; color: var(--muted); max-width: 62ch; line-height: 1.5;
+    margin: 0 0 28px 0;
+  }
+  .diagram-frame {
+    overflow-x: auto; background: var(--surface); border-radius: 10px;
+    padding: 20px 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+  svg.flow { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+
+  .node-rect { fill: var(--surface); stroke: var(--accent); stroke-width: var(--line-width); }
+  .node-diamond { fill: var(--surface); stroke: var(--accent); stroke-width: var(--line-width); }
+  .node-rect.reject { stroke: var(--alert); }
+  .node-pill { fill: var(--accent); stroke: none; }
+  .node-pill.end { fill: var(--muted); }
+  .node-pill.alert { fill: var(--alert); }
+  .node-pill text { fill: var(--surface); }
+
+  .node-label { font-size: 13.5px; fill: var(--ink); text-anchor: middle; }
+  .node-label .sub { font-size: 11.5px; fill: var(--muted); }
+
+  .edge { fill: none; stroke: var(--accent); stroke-width: var(--line-width); }
+  .edge.reject { stroke: var(--alert); stroke-dasharray: 6 5; }
+  .edge-label { font-size: 12px; fill: var(--muted); text-anchor: middle; }
+  .edge-label.reject { fill: var(--alert); }
+  .edge-label-bg { fill: var(--surface); }
+
+  footer { margin-top: 22px; font-size: 11.5px; color: var(--muted); }
+</style>
+
+<div class="page">
+  <p class="eyebrow">Kunicia — Note conceptuelle, annexe</p>
+  <h1>Organigramme fonctionnel : prédiction de poids par IA</h1>
+  <p class="caption">
+    De la demande de prédiction (pour un lapin, ou en lot pour tout le cheptel actif)
+    jusqu'à la comparaison ultérieure avec le poids réellement mesuré.
+  </p>
+
+  <div class="diagram-frame">
+    <svg class="flow" viewBox="0 0 1000 1350" role="img"
+         aria-label="Organigramme de la prédiction de poids par IA dans Kunicia : vérification de l'éligibilité du lapin (identifié, au moins 2 pesées, écart d'au moins 3 jours), calcul des variables, appel au service IA, enregistrement de la prédiction, puis comparaison ultérieure avec le poids réel pour détecter un écart anormal supérieur à 15 pourcent.">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)" />
+        </marker>
+        <marker id="arrow-reject" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--alert)" />
+        </marker>
+      </defs>
+
+      <!-- ============ EDGES ============ -->
+      <path class="edge" d="M320,75 L320,120" marker-end="url(#arrow)" />
+
+      <path class="edge" d="M320,230 L320,285" marker-end="url(#arrow)" />
+      <rect class="edge-label-bg" x="330" y="248" width="30" height="18" />
+      <text class="edge-label" x="345" y="261" text-anchor="start">Oui</text>
+
+      <path class="edge" d="M320,395 L320,450" marker-end="url(#arrow)" />
+      <rect class="edge-label-bg" x="330" y="413" width="30" height="18" />
+      <text class="edge-label" x="345" y="426" text-anchor="start">Oui</text>
+
+      <path class="edge" d="M320,560 L320,618" marker-end="url(#arrow)" />
+      <rect class="edge-label-bg" x="330" y="580" width="30" height="18" />
+      <text class="edge-label" x="345" y="593" text-anchor="start">Oui</text>
+      <path class="edge" d="M320,682 L320,733" marker-end="url(#arrow)" />
+      <path class="edge" d="M320,797 L320,848" marker-end="url(#arrow)" />
+      <path class="edge" d="M320,912 L320,963" marker-end="url(#arrow)" />
+      <path class="edge" d="M320,1027 L320,1075" marker-end="url(#arrow)" />
+
+      <!-- reject branches -> shared "rejeté" node -->
+      <path class="edge reject" d="M414,163 C560,200 620,260 654,320" marker-end="url(#arrow-reject)" />
+      <rect class="edge-label-bg" x="470" y="195" width="30" height="18" />
+      <text class="edge-label reject" x="485" y="208" text-anchor="start">Non</text>
+
+      <path class="edge reject" d="M430,340 L580,340" marker-end="url(#arrow-reject)" />
+      <rect class="edge-label-bg" x="500" y="331" width="30" height="18" />
+      <text class="edge-label reject" x="515" y="344" text-anchor="start">Non</text>
+
+      <path class="edge reject" d="M414,517 C500,460 620,430 620,395" marker-end="url(#arrow-reject)" />
+      <rect class="edge-label-bg" x="470" y="440" width="30" height="18" />
+      <text class="edge-label reject" x="485" y="453" text-anchor="start">Non</text>
+
+      <path class="edge reject" d="M700,395 L700,438" marker-end="url(#arrow-reject)" />
+
+      <!-- anormal / normal branches -->
+      <path class="edge reject" d="M280,1170 C230,1220 220,1240 220,1260" marker-end="url(#arrow-reject)" />
+      <rect class="edge-label-bg" x="150" y="1195" width="30" height="18" />
+      <text class="edge-label reject" x="165" y="1208" text-anchor="start">Oui</text>
+
+      <path class="edge" d="M360,1170 C410,1220 420,1240 420,1260" marker-end="url(#arrow)" />
+      <rect class="edge-label-bg" x="400" y="1195" width="30" height="18" />
+      <text class="edge-label" x="415" y="1208" text-anchor="start">Non</text>
+
+      <!-- ============ NODES ============ -->
+
+      <rect class="node-pill" x="180" y="25" width="280" height="50" rx="25" />
+      <text class="node-label" x="320" y="55" fill="var(--surface)">Début : demande de prédiction</text>
+
+      <polygon class="node-diamond" points="320,120 430,175 320,230 210,175" />
+      <text class="node-label" x="320" y="170">Lapin identifié</text>
+      <text class="node-label sub" x="320" y="186">et actif ?</text>
+
+      <polygon class="node-diamond" points="320,285 430,340 320,395 210,340" />
+      <text class="node-label" x="320" y="335">≥ 2 pesées</text>
+      <text class="node-label sub" x="320" y="351">enregistrées ?</text>
+
+      <polygon class="node-diamond" points="320,450 430,505 320,560 210,505" />
+      <text class="node-label" x="320" y="500">Écart ≥ 3 jours entre la</text>
+      <text class="node-label sub" x="320" y="516">1ère et la dernière pesée ?</text>
+
+      <rect class="node-rect" x="160" y="618" width="320" height="64" rx="8" />
+      <text class="node-label" x="320" y="646">Calcul des variables</text>
+      <text class="node-label sub" x="320" y="663">âge, poids, taux de croissance, race, sexe</text>
+
+      <rect class="node-rect" x="160" y="733" width="320" height="64" rx="8" />
+      <text class="node-label" x="320" y="761">Appel au service IA</text>
+      <text class="node-label sub" x="320" y="778">FastAPI + scikit-learn</text>
+
+      <rect class="node-rect" x="160" y="848" width="320" height="64" rx="8" />
+      <text class="node-label" x="320" y="876">Enregistrement de la prédiction</text>
+      <text class="node-label sub" x="320" y="893">échéance = date de calcul + horizon</text>
+
+      <rect class="node-rect" x="160" y="963" width="320" height="64" rx="8" style="stroke-dasharray:5 4" />
+      <text class="node-label" x="320" y="991">Nouvelle pesée</text>
+      <text class="node-label sub" x="320" y="1008">après la date d'échéance</text>
+
+      <polygon class="node-diamond" points="320,1075 430,1130 320,1185 210,1130" />
+      <text class="node-label" x="320" y="1125">Écart réel vs prédit</text>
+      <text class="node-label sub" x="320" y="1141">&gt; 15 % ?</text>
+
+      <rect class="node-pill alert" x="120" y="1260" width="200" height="50" rx="25" />
+      <text class="node-label" x="220" y="1290" fill="var(--surface)">Anormal, signalé à l'éleveur</text>
+
+      <rect class="node-pill end" x="330" y="1260" width="180" height="50" rx="25" />
+      <text class="node-label" x="420" y="1290" fill="var(--surface)">Normal</text>
+
+      <!-- rejected node -->
+      <rect class="node-rect reject" x="580" y="320" width="240" height="75" rx="8" />
+      <text class="node-label" x="700" y="350">Rejeté / ignoré</text>
+      <text class="node-label sub" x="700" y="367">(mode cheptel : lapin suivant)</text>
+
+      <rect class="node-pill end" x="600" y="438" width="200" height="50" rx="25" />
+      <text class="node-label" x="700" y="468" fill="var(--surface)">Fin : non calculée</text>
+
+    </svg>
+  </div>
+
+  <footer>
+    Kunicia — plateforme d'aide à la décision pour l'élevage cunicole. Organigramme établi à partir
+    du module backend Prediction (garde-fous d'éligibilité, appel au service Python, seuil d'écart anormal).
+  </footer>
+</div>

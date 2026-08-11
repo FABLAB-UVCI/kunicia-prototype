@@ -1,0 +1,169 @@
+<title>Kunicia — Organigramme alimentation</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --ink: #1a2e22;
+    --muted: #5f7a68;
+    --accent: #2f7d52;
+    --alert: #b23a2e;
+    --line-width: 2.2;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #10140f; --surface: #1a2118; --ink: #e6ede8; --muted: #8ba695;
+      --accent: #5fbf85; --alert: #e2685a;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #10140f; --surface: #1a2118; --ink: #e6ede8; --muted: #8ba695;
+    --accent: #5fbf85; --alert: #e2685a;
+  }
+  :root[data-theme="light"] {
+    --bg: #ffffff; --surface: #ffffff; --ink: #1a2e22; --muted: #5f7a68;
+    --accent: #2f7d52; --alert: #b23a2e;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    padding: clamp(20px, 4vw, 56px);
+  }
+  .page { max-width: 900px; margin: 0 auto; }
+  .eyebrow {
+    font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--muted); margin: 0 0 6px 0;
+  }
+  h1 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(22px, 3vw, 30px); font-weight: 700;
+    margin: 0 0 10px 0; text-wrap: balance;
+  }
+  .caption {
+    font-family: Georgia, "Times New Roman", serif; font-style: italic;
+    font-size: 15px; color: var(--muted); max-width: 62ch; line-height: 1.5;
+    margin: 0 0 28px 0;
+  }
+  .diagram-frame {
+    overflow-x: auto; background: var(--surface); border-radius: 10px;
+    padding: 20px 8px;
+  }
+  svg.flow { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+
+  .node-rect { fill: var(--surface); stroke: var(--accent); stroke-width: var(--line-width); }
+  .node-diamond { fill: var(--surface); stroke: var(--accent); stroke-width: var(--line-width); }
+  .node-diamond.alert { stroke: var(--alert); }
+  .node-pill { fill: var(--accent); stroke: none; }
+  .node-pill.end { fill: var(--muted); }
+  .node-pill.alert { fill: var(--alert); }
+  .node-pill text { fill: var(--surface); }
+
+  .node-label { font-size: 13.5px; fill: var(--ink); text-anchor: middle; }
+  .node-label .sub { font-size: 11.5px; fill: var(--muted); }
+
+  .edge { fill: none; stroke: var(--accent); stroke-width: var(--line-width); }
+  .edge.loop { stroke-dasharray: 6 5; }
+  .edge-label { font-size: 12px; fill: var(--muted); text-anchor: middle; }
+  .edge-label-bg { fill: var(--surface); }
+
+  footer { margin-top: 22px; font-size: 11.5px; color: var(--muted); }
+</style>
+
+<div class="page">
+  <p class="eyebrow">Kunicia — Note conceptuelle, annexe</p>
+  <h1>Organigramme fonctionnel : gestion de l'alimentation</h1>
+  <p class="caption">
+    De l'achat d'un stock d'aliment jusqu'à l'alerte d'épuisement, en détaillant
+    le recalcul du rythme de consommation à chaque nouvelle distribution.
+  </p>
+
+  <div class="diagram-frame">
+    <svg class="flow" viewBox="0 0 880 1150" role="img"
+         aria-label="Organigramme de la gestion de l'alimentation dans Kunicia : enregistrement d'un stock, création d'une distribution, calcul automatique de la consommation journalière et de la date d'épuisement estimée, avec recalcul à chaque nouvelle distribution, jusqu'à l'alerte si l'épuisement est proche.">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)" />
+        </marker>
+        <marker id="arrow-alert" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--alert)" />
+        </marker>
+        <marker id="dot" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6">
+          <circle cx="5" cy="5" r="4" fill="var(--accent)" />
+        </marker>
+      </defs>
+
+      <g transform="translate(80,0)">
+      <!-- ============ EDGES ============ -->
+      <path class="edge" d="M320,75 L320,120" marker-end="url(#arrow)" />
+      <path class="edge" d="M320,184 L320,225" marker-end="url(#arrow)" />
+      <path class="edge" d="M320,295 L320,336" marker-end="url(#arrow)" />
+      <path class="edge" d="M320,406 L320,450" marker-end="url(#arrow)" />
+
+      <!-- diamond1 (nouvelle distribution) -> loop back to r2 (Oui) -->
+      <path class="edge loop" d="M210,505 C90,505 90,260 160,260" marker-start="url(#dot)" marker-end="url(#arrow)" />
+      <rect class="edge-label-bg" x="-70" y="370" width="140" height="18" />
+      <text class="edge-label" x="0" y="383">Oui, remplace le</text>
+      <rect class="edge-label-bg" x="-70" y="388" width="140" height="18" />
+      <text class="edge-label" x="0" y="401">rythme précédent</text>
+
+      <!-- diamond1 -> r4 (Non) -->
+      <path class="edge" d="M320,560 L320,656" marker-end="url(#arrow)" />
+      <rect class="edge-label-bg" x="330" y="600" width="30" height="18" />
+      <text class="edge-label" x="345" y="613" text-anchor="start">Non</text>
+
+      <path class="edge" d="M320,726 L320,767" marker-end="url(#arrow)" />
+
+      <!-- diamond2 -> alert (Oui) -->
+      <path class="edge alert" d="M320,877 C300,920 240,970 220,1015" marker-end="url(#arrow-alert)" />
+      <rect class="edge-label-bg" x="150" y="965" width="30" height="18" />
+      <text class="edge-label" x="165" y="978" text-anchor="start" fill="var(--alert)">Oui</text>
+
+      <!-- diamond2 -> fin (Non) -->
+      <path class="edge" d="M320,877 C340,920 400,970 420,1015" marker-end="url(#arrow)" />
+      <rect class="edge-label-bg" x="400" y="965" width="30" height="18" />
+      <text class="edge-label" x="415" y="978" text-anchor="start">Non</text>
+
+      <!-- ============ NODES ============ -->
+
+      <rect class="node-pill" x="180" y="25" width="280" height="50" rx="25" />
+      <text class="node-label" x="320" y="55" fill="var(--surface)">Début : achat de stock d'aliment</text>
+
+      <rect class="node-rect" x="160" y="120" width="320" height="64" rx="8" />
+      <text class="node-label" x="320" y="148">Enregistrer le stock</text>
+      <text class="node-label sub" x="320" y="165">type, quantité initiale</text>
+
+      <rect class="node-rect" x="160" y="225" width="320" height="70" rx="8" />
+      <text class="node-label" x="320" y="253">Créer une distribution</text>
+      <text class="node-label sub" x="320" y="270">kg/jour × nb lapins, cage optionnelle</text>
+
+      <rect class="node-rect" x="160" y="336" width="320" height="70" rx="8" />
+      <text class="node-label" x="320" y="364">Calcul automatique</text>
+      <text class="node-label sub" x="320" y="381">consommation journalière + date d'épuisement</text>
+
+      <polygon class="node-diamond" points="320,450 430,505 320,560 210,505" />
+      <text class="node-label" x="320" y="500">Nouvelle distribution</text>
+      <text class="node-label sub" x="320" y="516">créée avant épuisement ?</text>
+
+      <rect class="node-rect" x="160" y="656" width="320" height="70" rx="8" />
+      <text class="node-label" x="320" y="684">Consultation</text>
+      <text class="node-label sub" x="320" y="701">quantité restante recalculée à la demande</text>
+
+      <polygon class="node-diamond alert" points="320,767 430,822 320,877 210,822" />
+      <text class="node-label" x="320" y="817">Épuisement dans</text>
+      <text class="node-label sub" x="320" y="833">≤ 7 jours ?</text>
+
+      <rect class="node-pill alert" x="110" y="1015" width="220" height="50" rx="25" />
+      <text class="node-label" x="220" y="1045" fill="var(--surface)">Alerte sur le tableau de bord</text>
+
+      <rect class="node-pill end" x="350" y="1015" width="140" height="50" rx="25" />
+      <text class="node-label" x="420" y="1045" fill="var(--surface)">Fin</text>
+      </g>
+    </svg>
+  </div>
+
+  <footer>
+    Kunicia — plateforme d'aide à la décision pour l'élevage cunicole. Organigramme établi à partir
+    du module backend Alimentation (calcul lazy de la consommation, estimation de la date d'épuisement).
+  </footer>
+</div>

@@ -1,0 +1,315 @@
+<title>Kunicia — Organigramme fonctionnel</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --ink: #1a2e22;
+    --muted: #5f7a68;
+    --accent: #2f7d52;
+    --alert: #b23a2e;
+    --line-width: 2.2;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #10140f;
+      --surface: #1a2118;
+      --ink: #e6ede8;
+      --muted: #8ba695;
+      --accent: #5fbf85;
+      --alert: #e2685a;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #10140f;
+    --surface: #1a2118;
+    --ink: #e6ede8;
+    --muted: #8ba695;
+    --accent: #5fbf85;
+    --alert: #e2685a;
+  }
+  :root[data-theme="light"] {
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --ink: #1a2e22;
+    --muted: #5f7a68;
+    --accent: #2f7d52;
+    --alert: #b23a2e;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    padding: clamp(20px, 4vw, 56px);
+  }
+  .page {
+    max-width: 980px;
+    margin: 0 auto;
+  }
+  .eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 6px 0;
+  }
+  h1 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(24px, 3vw, 32px);
+    font-weight: 700;
+    margin: 0 0 10px 0;
+    text-wrap: balance;
+    color: var(--ink);
+  }
+  .caption {
+    font-family: Georgia, "Times New Roman", serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 62ch;
+    line-height: 1.5;
+    margin: 0 0 28px 0;
+  }
+  .diagram-frame {
+    overflow-x: auto;
+    background: var(--surface);
+    border-radius: 10px;
+    padding: 20px 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+  svg.flow { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+
+  .node-rect { fill: var(--surface); stroke: var(--accent); stroke-width: var(--line-width); }
+  .node-diamond { fill: var(--surface); stroke: var(--accent); stroke-width: var(--line-width); }
+  .node-diamond.alert { stroke: var(--alert); }
+  .node-pill { fill: var(--accent); stroke: none; }
+  .node-pill.end { fill: var(--muted); }
+  .node-pill text { fill: var(--surface); }
+
+  .node-label {
+    font-size: 13.5px;
+    fill: var(--ink);
+    text-anchor: middle;
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+  .node-label .sub { font-size: 11.5px; fill: var(--muted); }
+
+  .edge { fill: none; stroke: var(--accent); stroke-width: var(--line-width); }
+  .edge.loop { stroke-dasharray: 6 5; }
+  .edge.alert { stroke: var(--alert); }
+  .edge.alert.loop { stroke-dasharray: 6 5; }
+
+  .edge-label {
+    font-size: 12px;
+    fill: var(--muted);
+    text-anchor: middle;
+  }
+  .edge-label-bg { fill: var(--surface); }
+  .edge-label.alert { fill: var(--alert); }
+
+  footer {
+    margin-top: 22px;
+    font-size: 11.5px;
+    color: var(--muted);
+  }
+</style>
+
+<div class="page">
+  <p class="eyebrow">Kunicia — Note conceptuelle, annexe</p>
+  <h1>Organigramme fonctionnel : cycle de vie d'un lapin</h1>
+  <p class="caption">
+    Du choix d'un accouplement jusqu'à la sortie du cheptel (vente ou nouvel accouplement),
+    en détaillant la vérification de consanguinité — le seul point de décision où
+    l'éleveur intervient explicitement dans un flux par ailleurs automatique.
+  </p>
+
+  <div class="diagram-frame">
+    <svg class="flow" viewBox="0 0 920 1780" role="img"
+         aria-label="Organigramme du cycle de vie d'un lapin dans Kunicia : sélection d'un accouplement, vérification de consanguinité avec décision de l'éleveur en cas d'alerte, gestation, mise bas, sevrage, séparation par sexe, pesées et prédiction IA, jusqu'à la maturité reproductive menant à un nouvel accouplement ou à la vente.">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)" />
+        </marker>
+        <marker id="arrow-alert" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--alert)" />
+        </marker>
+        <marker id="dot" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6">
+          <circle cx="5" cy="5" r="4" fill="var(--accent)" />
+        </marker>
+        <marker id="dot-alert" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6">
+          <circle cx="5" cy="5" r="4" fill="var(--alert)" />
+        </marker>
+      </defs>
+
+      <!-- ============ EDGES (drawn first, under nodes) ============ -->
+
+      <!-- start -> selection -->
+      <path class="edge" d="M320,75 L320,133" marker-end="url(#arrow)" />
+
+      <!-- selection -> eligible? -->
+      <path class="edge" d="M320,197 L320,235" marker-end="url(#arrow)" />
+
+      <!-- eligible? -> selection (loop, Non) -->
+      <path class="edge loop" d="M210,290 C120,290 120,150 158,150" marker-start="url(#dot)" marker-end="url(#arrow)" />
+      <rect class="edge-label-bg" x="45" y="209" width="205" height="18" />
+      <text class="edge-label" x="147" y="222">Non, changer de mâle ou de femelle</text>
+
+      <!-- eligible? -> calcul F (Oui) -->
+      <path class="edge" d="M320,345 L320,398" marker-end="url(#arrow)" />
+      <rect class="edge-label-bg" x="330" y="363" width="30" height="18" />
+      <text class="edge-label" x="345" y="376" text-anchor="start">Oui</text>
+
+      <!-- calcul F -> niveau alerte? -->
+      <path class="edge" d="M320,462 L320,505" marker-end="url(#arrow)" />
+
+      <!-- niveau alerte? -> statuts (Aucune) -->
+      <path class="edge" d="M320,615 L320,668" marker-end="url(#arrow)" />
+      <rect class="edge-label-bg" x="330" y="633" width="58" height="18" />
+      <text class="edge-label" x="359" y="646" text-anchor="start">Aucune</text>
+
+      <!-- niveau alerte? -> decision eleveur (risque) -->
+      <path class="edge alert" d="M420,545 C560,545 560,560 588,560" marker-end="url(#arrow-alert)" />
+      <rect class="edge-label-bg" x="440" y="505" width="118" height="18" />
+      <text class="edge-label alert" x="499" y="518">Risque détecté</text>
+
+      <!-- decision eleveur -> selection (loop, changer) -->
+      <path class="edge alert loop" d="M700,505 C700,320 500,160 482,165" marker-start="url(#dot-alert)" marker-end="url(#arrow-alert)" />
+      <rect class="edge-label-bg" x="600" y="300" width="150" height="18" />
+      <text class="edge-label alert" x="675" y="313">Changer mâle ou femelle</text>
+
+      <!-- decision eleveur -> fin annulé -->
+      <path class="edge alert" d="M700,615 L700,668" marker-end="url(#arrow-alert)" />
+      <rect class="edge-label-bg" x="710" y="633" width="58" height="18" />
+      <text class="edge-label alert" x="715" y="646" text-anchor="start">Annuler</text>
+
+      <!-- decision eleveur -> statuts (valider quand même) -->
+      <path class="edge alert" d="M656,593 C500,650 420,668 396,666" marker-end="url(#arrow-alert)" />
+      <rect class="edge-label-bg" x="430" y="468" width="150" height="34" />
+      <text class="edge-label alert" x="437" y="481" text-anchor="start">Valider malgré</text>
+      <text class="edge-label alert" x="437" y="496" text-anchor="start">l'alerte (motif)</text>
+
+      <!-- statuts -> mise bas -->
+      <path class="edge" d="M320,732 L320,783" marker-end="url(#arrow)" />
+
+      <!-- mise bas -> sevrage -->
+      <path class="edge" d="M320,847 L320,898" marker-end="url(#arrow)" />
+
+      <!-- sevrage -> cage/separation -->
+      <path class="edge" d="M320,962 L320,1013" marker-end="url(#arrow)" />
+
+      <!-- cage/separation -> pesees -->
+      <path class="edge" d="M320,1077 L320,1128" marker-end="url(#arrow)" />
+
+      <!-- pesees -> historique suffisant? -->
+      <path class="edge" d="M320,1192 L320,1235" marker-end="url(#arrow)" />
+
+      <!-- historique? -> pesees (loop, non) -->
+      <path class="edge loop" d="M210,1290 C140,1290 140,1160 158,1160" marker-start="url(#dot)" marker-end="url(#arrow)" />
+      <rect class="edge-label-bg" x="118" y="1213" width="112" height="18" />
+      <text class="edge-label" x="174" y="1226">Pas encore assez</text>
+
+      <!-- historique? -> prediction (oui) -->
+      <path class="edge" d="M320,1345 L320,1388" marker-end="url(#arrow)" />
+      <rect class="edge-label-bg" x="330" y="1358" width="30" height="18" />
+      <text class="edge-label" x="345" y="1371" text-anchor="start">Oui</text>
+
+      <!-- prediction -> maturite? -->
+      <path class="edge" d="M320,1452 L320,1495" marker-end="url(#arrow)" />
+
+      <!-- maturite? -> selection (big loop, nouvel accouplement) -->
+      <path class="edge loop" d="M210,1550 C40,1550 40,182 158,182" marker-start="url(#dot)" marker-end="url(#arrow)" />
+      <rect class="edge-label-bg" x="46" y="850" width="150" height="18" transform="rotate(-90 121 859)" />
+      <text class="edge-label" x="121" y="863" transform="rotate(-90 121 859)">Nouvel accouplement</text>
+
+      <!-- maturite? -> fin vente -->
+      <path class="edge" d="M320,1605 L320,1655" marker-end="url(#arrow)" />
+      <rect class="edge-label-bg" x="330" y="1620" width="90" height="18" />
+      <text class="edge-label" x="345" y="1633" text-anchor="start">Vente / sortie</text>
+
+      <!-- ============ NODES ============ -->
+
+      <!-- start pill -->
+      <rect class="node-pill" x="180" y="25" width="280" height="50" rx="25" />
+      <text class="node-label" x="320" y="55" fill="var(--surface)">Début : proposition d'accouplement</text>
+
+      <!-- selection -->
+      <rect class="node-rect" x="160" y="133" width="320" height="64" rx="8" />
+      <text class="node-label" x="320" y="169">Sélection du mâle et de la femelle</text>
+
+      <!-- eligible diamond -->
+      <polygon class="node-diamond" points="320,235 430,290 320,345 210,290" />
+      <text class="node-label" x="320" y="284">Lapins éligibles ?</text>
+      <text class="node-label sub" x="320" y="300">identifiés, statut compatible</text>
+
+      <!-- calcul F -->
+      <rect class="node-rect" x="160" y="398" width="320" height="64" rx="8" />
+      <text class="node-label" x="320" y="426">Calcul du coefficient de parenté</text>
+      <text class="node-label sub" x="320" y="443">formule de Wright, sur 2 générations</text>
+
+      <!-- niveau alerte diamond -->
+      <polygon class="node-diamond alert" points="320,505 430,560 320,615 210,560" />
+      <text class="node-label" x="320" y="555">Niveau d'alerte</text>
+      <text class="node-label sub" x="320" y="571">consanguinité ?</text>
+
+      <!-- decision eleveur diamond (side) -->
+      <polygon class="node-diamond alert" points="700,505 810,560 700,615 590,560" />
+      <text class="node-label" x="700" y="555">Décision de</text>
+      <text class="node-label sub" x="700" y="571">l'éleveur</text>
+
+      <!-- fin annulé (side pill) -->
+      <rect class="node-pill end" x="610" y="668" width="180" height="50" rx="25" />
+      <text class="node-label" x="700" y="698" fill="var(--surface)">Fin : accouplement annulé</text>
+
+      <!-- statuts -->
+      <rect class="node-rect" x="160" y="668" width="320" height="64" rx="8" />
+      <text class="node-label" x="320" y="696">Mâle → Reproducteur</text>
+      <text class="node-label sub" x="320" y="713">Femelle → En gestation</text>
+
+      <!-- mise bas -->
+      <rect class="node-rect" x="160" y="783" width="320" height="64" rx="8" />
+      <text class="node-label" x="320" y="811">Mise bas (~31 jours)</text>
+      <text class="node-label sub" x="320" y="828">Portée enregistrée · Femelle → Allaitement</text>
+
+      <!-- sevrage -->
+      <rect class="node-rect" x="160" y="898" width="320" height="64" rx="8" />
+      <text class="node-label" x="320" y="926">Sevrage (~4-5 semaines)</text>
+      <text class="node-label sub" x="320" y="943">Fiches + tatouage · Femelle → Reproducteur</text>
+
+      <!-- cage/separation -->
+      <rect class="node-rect" x="160" y="1013" width="320" height="64" rx="8" />
+      <text class="node-label" x="320" y="1041">Cage collective, puis séparation par sexe</text>
+      <text class="node-label sub" x="320" y="1058">~10-12 semaines</text>
+
+      <!-- pesees -->
+      <rect class="node-rect" x="160" y="1128" width="320" height="64" rx="8" />
+      <text class="node-label" x="320" y="1166">Pesées régulières</text>
+
+      <!-- historique suffisant diamond -->
+      <polygon class="node-diamond" points="320,1235 430,1290 320,1345 210,1290" />
+      <text class="node-label" x="320" y="1284">Historique suffisant ?</text>
+      <text class="node-label sub" x="320" y="1300">≥ 2 pesées, ≥ 3 jours d'écart</text>
+
+      <!-- prediction -->
+      <rect class="node-rect" x="160" y="1388" width="320" height="64" rx="8" />
+      <text class="node-label" x="320" y="1416">Prédiction de poids par IA</text>
+      <text class="node-label sub" x="320" y="1433">écart anormal signalé si &gt; 15 %</text>
+
+      <!-- maturite diamond -->
+      <polygon class="node-diamond" points="320,1495 430,1550 320,1605 210,1550" />
+      <text class="node-label" x="320" y="1554">Maturité reproductive</text>
+      <text class="node-label sub" x="320" y="1570">atteinte ?</text>
+
+      <!-- fin vente pill -->
+      <rect class="node-pill end" x="180" y="1655" width="280" height="50" rx="25" />
+      <text class="node-label" x="320" y="1685" fill="var(--surface)">Fin : vente ou sortie du cheptel</text>
+
+    </svg>
+  </div>
+
+  <footer>
+    Kunicia — plateforme d'aide à la décision pour l'élevage cunicole. Organigramme établi à partir
+    du comportement effectif du backend (modules Accouplement, Portée, Lapin, Prédiction).
+  </footer>
+</div>

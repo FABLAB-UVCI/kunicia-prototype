@@ -1,0 +1,261 @@
+<title>Kunicia — Organigramme commercial</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --ink: #1a2e22;
+    --muted: #5f7a68;
+    --accent: #2f7d52;
+    --alert: #b23a2e;
+    --line-width: 2.2;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #10140f; --surface: #1a2118; --ink: #e6ede8; --muted: #8ba695;
+      --accent: #5fbf85; --alert: #e2685a;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #10140f; --surface: #1a2118; --ink: #e6ede8; --muted: #8ba695;
+    --accent: #5fbf85; --alert: #e2685a;
+  }
+  :root[data-theme="light"] {
+    --bg: #ffffff; --surface: #ffffff; --ink: #1a2e22; --muted: #5f7a68;
+    --accent: #2f7d52; --alert: #b23a2e;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    padding: clamp(20px, 4vw, 56px);
+  }
+  .page { max-width: 1120px; margin: 0 auto; }
+  .eyebrow {
+    font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--muted); margin: 0 0 6px 0;
+  }
+  h1 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(22px, 3vw, 30px); font-weight: 700;
+    margin: 0 0 10px 0; text-wrap: balance;
+  }
+  .caption {
+    font-family: Georgia, "Times New Roman", serif; font-style: italic;
+    font-size: 15px; color: var(--muted); max-width: 68ch; line-height: 1.5;
+    margin: 0 0 28px 0;
+  }
+  .diagram-frame {
+    overflow-x: auto; background: var(--surface); border-radius: 10px;
+    padding: 20px 8px;
+  }
+  svg.flow { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+
+  .node-rect { fill: var(--surface); stroke: var(--accent); stroke-width: var(--line-width); }
+  .node-diamond { fill: var(--surface); stroke: var(--accent); stroke-width: var(--line-width); }
+  .node-diamond.alert { stroke: var(--alert); }
+  .node-pill { fill: var(--accent); stroke: none; }
+  .node-pill.end { fill: var(--muted); }
+  .node-pill.alert { fill: var(--alert); }
+  .node-pill text { fill: var(--surface); }
+
+  .node-label { font-size: 13px; fill: var(--ink); text-anchor: middle; }
+  .node-label .sub { font-size: 11px; fill: var(--muted); }
+
+  .edge { fill: none; stroke: var(--accent); stroke-width: var(--line-width); }
+  .edge.loop { stroke-dasharray: 6 5; }
+  .edge.alert { stroke: var(--alert); }
+  .edge-label { font-size: 12px; fill: var(--muted); text-anchor: middle; }
+  .edge-label.alert { fill: var(--alert); }
+  .edge-label-bg { fill: var(--surface); }
+
+  footer { margin-top: 22px; font-size: 11.5px; color: var(--muted); }
+</style>
+
+<div class="page">
+  <p class="eyebrow">Kunicia — Note conceptuelle, annexe</p>
+  <h1>Organigramme fonctionnel : ventes, clients et suivi financier</h1>
+  <p class="caption">
+    De la vente d'un lapin — avec le double garde-fou (statut compatible, fiche complète) —
+    jusqu'au solde financier, en passant par la gestion des clients
+    (création, suppression bloquée dès qu'un client a des ventes) et l'enregistrement des dépenses.
+  </p>
+
+  <div class="diagram-frame">
+    <svg class="flow" viewBox="15 -7 1000 1300" role="img"
+         aria-label="Organigramme du cycle commercial dans Kunicia : vente d'un lapin (vérification du statut et de la fiche, client optionnel, prix et date), enregistrement en une transaction avec mise à jour du statut VENDU et sortie de cage, puis chiffre d'affaires, dépenses et solde net, avec la gestion des clients en parallèle (création, suppression bloquée si des ventes sont liées).">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)" />
+        </marker>
+        <marker id="arrow-alert" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--alert)" />
+        </marker>
+        <marker id="dot" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6">
+          <circle cx="5" cy="5" r="4" fill="var(--accent)" />
+        </marker>
+        <marker id="dot-alert" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6">
+          <circle cx="5" cy="5" r="4" fill="var(--alert)" />
+        </marker>
+      </defs>
+
+      <!-- ============ EDGES ============ -->
+
+      <!-- start -> choix lapin -->
+      <path class="edge" d="M500,75 L500,120" marker-end="url(#arrow)" />
+
+      <!-- choix lapin -> vente autorisee ? -->
+      <path class="edge" d="M500,190 L500,248" marker-end="url(#arrow)" />
+
+      <!-- vente autorisee ? -> choix lapin (loop, Non) -->
+      <path class="edge loop" d="M380,303 C250,303 250,185 340,185" marker-start="url(#dot)" marker-end="url(#arrow)" />
+      <rect class="edge-label-bg" x="235" y="230" width="120" height="36" />
+      <text class="edge-label" x="295" y="244">Non — changer</text>
+      <text class="edge-label" x="295" y="260">de lapin</text>
+
+      <!-- vente autorisee ? -> renseigner vente (Oui) -->
+      <path class="edge" d="M500,358 L500,418" marker-end="url(#arrow)" />
+      <rect class="edge-label-bg" x="510" y="370" width="30" height="18" />
+      <text class="edge-label" x="525" y="383" text-anchor="start">Oui</text>
+
+      <!-- renseigner vente -> client lane (client inconnu ?) -->
+      <path class="edge" d="M660,460 C690,460 700,483 720,483" marker-end="url(#arrow)" />
+      <rect class="edge-label-bg" x="655" y="430" width="130" height="18" />
+      <text class="edge-label" x="720" y="443">client inconnu ?</text>
+
+      <!-- renseigner vente -> transaction -->
+      <path class="edge" d="M500,488 L500,588" marker-end="url(#arrow)" />
+
+      <!-- transaction -> chiffre d'affaires -->
+      <path class="edge" d="M500,672 L500,720" marker-end="url(#arrow)" />
+
+      <!-- chiffre d'affaires -> nouvelle depense ? -->
+      <path class="edge" d="M500,790 L500,850" marker-end="url(#arrow)" />
+
+      <!-- nouvelle depense ? -> enregistrer depense (Oui) -->
+      <path class="edge" d="M400,905 C360,905 295,935 260,935" marker-end="url(#arrow)" />
+      <rect class="edge-label-bg" x="320" y="890" width="30" height="18" />
+      <text class="edge-label" x="335" y="903" text-anchor="start">Oui</text>
+
+      <!-- enregistrer depense -> total depenses -->
+      <path class="edge" d="M160,970 L160,1015" marker-end="url(#arrow)" />
+
+      <!-- total depenses -> solde -->
+      <path class="edge" d="M260,1050 L340,1050" marker-end="url(#arrow)" />
+      <rect class="edge-label-bg" x="280" y="1025" width="40" height="18" />
+      <text class="edge-label" x="300" y="1038">dépenses</text>
+
+      <!-- nouvelle depense ? -> solde (Non) -->
+      <path class="edge" d="M500,960 L500,1015" marker-end="url(#arrow)" />
+      <rect class="edge-label-bg" x="512" y="980" width="30" height="18" />
+      <text class="edge-label" x="527" y="993" text-anchor="start">Non</text>
+
+      <!-- solde -> fin -->
+      <path class="edge" d="M500,1099 L500,1140" marker-end="url(#arrow)" />
+
+      <!-- CLIENT LANE -->
+      <!-- creer client -> client ajoute -->
+      <path class="edge" d="M830,518 L830,610" marker-end="url(#arrow)" />
+
+      <!-- client ajoute -> supprimer ? -->
+      <path class="edge" d="M830,680 L830,762" marker-end="url(#arrow)" />
+
+      <!-- supprimer ? -> ventes liees ? (Oui) -->
+      <path class="edge" d="M830,862 L830,954" marker-end="url(#arrow)" />
+      <rect class="edge-label-bg" x="840" y="900" width="30" height="18" />
+      <text class="edge-label" x="855" y="913" text-anchor="start">Oui</text>
+
+      <!-- supprimer ? -> client ajoute (loop, Non) -->
+      <path class="edge loop" d="M930,812 C980,812 980,645 940,645" marker-start="url(#dot)" marker-end="url(#arrow)" />
+      <rect class="edge-label-bg" x="900" y="720" width="40" height="18" />
+      <text class="edge-label" x="920" y="733">Non</text>
+
+      <!-- ventes liees ? -> suppression bloquee (Oui) -->
+      <path class="edge alert" d="M830,1054 C830,1135 865,1145 865,1210" marker-end="url(#arrow-alert)" />
+      <rect class="edge-label-bg" x="855" y="1110" width="95" height="18" />
+      <text class="edge-label alert" x="902" y="1123" text-anchor="start">Oui — ventes</text>
+
+      <!-- ventes liees ? -> client supprime (Aucune) -->
+      <path class="edge" d="M740,1004 C740,1140 710,1190 590,1210" marker-end="url(#arrow)" />
+      <rect class="edge-label-bg" x="650" y="1100" width="100" height="18" />
+      <text class="edge-label" x="700" y="1113">Aucune vente</text>
+
+      <!-- ============ NODES ============ -->
+
+      <!-- MAIN FLOW -->
+      <rect class="node-pill" x="350" y="25" width="300" height="50" rx="25" />
+      <text class="node-label" x="500" y="55" fill="var(--surface)">Début : vente d'un lapin</text>
+
+      <rect class="node-rect" x="340" y="120" width="320" height="70" rx="8" />
+      <text class="node-label" x="500" y="148">Choix du lapin à vendre</text>
+      <text class="node-label sub" x="500" y="165">parmi les lapins de la ferme</text>
+
+      <polygon class="node-diamond" points="500,248 620,303 500,358 380,303" />
+      <text class="node-label" x="500" y="291">Vente autorisée ?</text>
+      <text class="node-label sub" x="500" y="308">ni décédé ni vendu</text>
+      <text class="node-label sub" x="500" y="324">fiche identifiée</text>
+
+      <rect class="node-rect" x="340" y="418" width="320" height="70" rx="8" />
+      <text class="node-label" x="500" y="446">Renseigner la vente</text>
+      <text class="node-label sub" x="500" y="463">client (optionnel), prix, date = maintenant</text>
+
+      <rect class="node-rect" x="340" y="588" width="320" height="84" rx="8" />
+      <text class="node-label" x="500" y="620">Enregistrement en une transaction</text>
+      <text class="node-label sub" x="500" y="637">vente + mouvement « Vente »</text>
+      <text class="node-label sub" x="500" y="652">statut → VENDU · sortie de cage</text>
+
+      <rect class="node-rect" x="340" y="720" width="320" height="70" rx="8" />
+      <text class="node-label" x="500" y="748">Chiffre d'affaires actualisé</text>
+      <text class="node-label sub" x="500" y="765">CA = Σ des prix des ventes</text>
+
+      <polygon class="node-diamond" points="500,850 600,905 500,960 400,905" />
+      <text class="node-label" x="500" y="900">Nouvelle dépense ?</text>
+      <text class="node-label sub" x="500" y="916">à enregistrer ?</text>
+
+      <rect class="node-rect" x="340" y="1015" width="320" height="84" rx="8" />
+      <text class="node-label" x="500" y="1043">Solde net = CA − dépenses</text>
+      <text class="node-label sub" x="500" y="1060">sur la période : mois / année / tout</text>
+
+      <rect class="node-pill end" x="350" y="1140" width="300" height="50" rx="25" />
+      <text class="node-label" x="500" y="1170" fill="var(--surface)">Fin : suivi financier à jour</text>
+
+      <!-- DEPENSE LANE -->
+      <rect class="node-rect" x="60" y="900" width="200" height="70" rx="8" />
+      <text class="node-label" x="160" y="928">Enregistrer une dépense</text>
+      <text class="node-label sub" x="160" y="945">catégorie, libellé, montant</text>
+
+      <rect class="node-rect" x="60" y="1015" width="200" height="70" rx="8" />
+      <text class="node-label" x="160" y="1043">Total des dépenses</text>
+      <text class="node-label sub" x="160" y="1060">Σ des montants</text>
+
+      <!-- CLIENT LANE -->
+      <rect class="node-rect" x="720" y="448" width="220" height="70" rx="8" />
+      <text class="node-label" x="830" y="476">Créer le client</text>
+      <text class="node-label sub" x="830" y="493">nom, téléphone, adresse</text>
+
+      <rect class="node-rect" x="720" y="610" width="220" height="70" rx="8" />
+      <text class="node-label" x="830" y="638">Client ajouté à la liste</text>
+      <text class="node-label sub" x="830" y="655">disponible pour la vente</text>
+
+      <polygon class="node-diamond" points="830,762 930,812 830,862 730,812" />
+      <text class="node-label" x="830" y="806">Supprimer ce client ?</text>
+
+      <polygon class="node-diamond alert" points="830,954 920,1004 830,1054 740,1004" />
+      <text class="node-label" x="830" y="999">Ventes liées ?</text>
+      <text class="node-label sub" x="830" y="1015">historique d'achats</text>
+
+      <rect class="node-pill end" x="470" y="1210" width="240" height="50" rx="25" />
+      <text class="node-label" x="590" y="1240" fill="var(--surface)">Fin : client supprimé</text>
+
+      <rect class="node-pill alert" x="760" y="1210" width="210" height="50" rx="25" />
+      <text class="node-label" x="865" y="1240" fill="var(--surface)">Bloqué : ventes enregistrées</text>
+
+    </svg>
+  </div>
+
+  <footer>
+    Kunicia — plateforme d'aide à la décision pour l'élevage cunicole. Organigramme établi à partir
+    des modules backend Vente, Client et Finance (transaction de vente, journal de mouvements,
+    chiffre d'affaires, dépenses, solde net).
+  </footer>
+</div>

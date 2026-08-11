@@ -1,0 +1,6 @@
+afficher les identifiants des éléveurs pour les retrouver facilement;
+permettre de créer plusieurs lapins c'est à dire quand on a plusieurs lapins qui entrent par exemple on peut créer une vague de lapin et à la suite on 
+va configurer différents différente identité de lapin en fonction de leur numéro;
+permettre aussi aux éleveurs de pouvoir dans la partie finance, ajouter des montants, par exemple provisoires à confirmer plus tard pour si il va livrer des
+lapins et que peut être il touche à l'argent de la caisse
+voir si possible compléter la partie qr pour les cages 
