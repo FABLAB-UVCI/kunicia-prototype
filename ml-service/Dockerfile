@@ -13,7 +13,9 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
-RUN python data/generate_synthetic_data.py && python train_model.py
+# model/ n'est pas versionné (joblib généré) → le dossier n'existe pas dans le
+# clone de build : on le crée avant d'entraîner.
+RUN mkdir -p model && python data/generate_synthetic_data.py && python train_model.py
 
 ENV PORT=8000
 EXPOSE 8000
