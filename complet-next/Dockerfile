@@ -63,6 +63,10 @@ COPY --from=build /app/lib/generated ./lib/generated
 RUN npm install --prefix /opt/prisma-tools --no-save --registry=https://registry.yarnpkg.com prisma@7.9.1 \
   && cp -a /opt/prisma-tools/node_modules/. /app/node_modules/
 
-# migrate + seed automatiques (ré-exécutables sans risque : le seed supprime
-# puis recrée uniquement les données du compte de démo), puis serveur Next.
-CMD ["sh", "-c", "node /app/node_modules/prisma/build/index.js migrate deploy && node prisma/seed.ts && node server.js"]
+# migrate + seed en ARRIÈRE-PLAN : le serveur doit écouter sur $PORT dans les
+# 40 s du healthcheck Voisilab, sinon le conteneur est tué. Le migrate deploy
+# est réessayé (DB éventuellement lente à démarrer) ; le seed est idempotent
+# (recrée uniquement les données du compte de démo). Le serveur Next démarre
+# en parallèle et répond au probe ; les données sont prêtes quelques secondes
+# après (visible dans les logs : "==> migrate+seed OK").
+CMD ["sh", "-c", "(echo '==> migrate deploy (arriere-plan)'; until node /app/node_modules/prisma/build/index.js migrate deploy; do echo '==> DB pas prete, nouvelle tentative dans 5s'; sleep 5; done && echo '==> seed' && node prisma/seed.ts && echo '==> migrate+seed OK') & node server.js"]
