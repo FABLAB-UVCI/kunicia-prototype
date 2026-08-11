@@ -4,11 +4,12 @@
 # (output standalone), puis runtime léger + CLI prisma pour
 # migrate + seed automatiques au démarrage.
 #
-# Registre : npmjs.org par défaut (aucun .npmrc copié) — c'est le
-# registre rapide et fiable sur le builder Voisilab. Le .npmrc local
-# (npmmirror) ne doit pas être embarqué dans l'image : npmmirror est
-# trop lent/instable côté Voisilab. package-lock.json (registre npmjs)
-# est committé pour un `npm ci` déterministe.
+# Registre : registry.yarnpkg.com (cf. .npmrc embarqué dans l'image) — c'est
+# le seul registre rapide et fiable sur le builder Voisilab : npmjs.org y est
+# bloqué (délai de build dépassé) et npmmirror y est trop lent. La recette
+# vient du projet de référence succes-gmdi. package-lock.json (URL npmjs.org)
+# est committé pour un `npm ci` déterministe ; npm réécrit automatiquement le
+# registre vers yarnpkg au moment de l'install.
 # ============================================================
 
 # ---------- Étape 1 : build ----------
@@ -31,7 +32,7 @@ ARG NEXT_PUBLIC_APP_URL=http://localhost:3000
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_APP_URL=$NEXT_PUBLIC_APP_URL
 
-COPY package.json package-lock.json ./
+COPY .npmrc package.json package-lock.json ./
 RUN npm ci --no-audit --no-fund
 
 COPY . .
@@ -59,7 +60,7 @@ COPY --from=build /app/lib/generated ./lib/generated
 # CLI prisma (devDependency absente du standalone) — install npm réalisée
 # dans un prefix séparé puis copiée à plat (layout npm réel, pas de symlinks
 # pnpm) ; ne touche pas au node_modules tracé du standalone.
-RUN npm install --prefix /opt/prisma-tools --no-save prisma@7.9.1 \
+RUN npm install --prefix /opt/prisma-tools --no-save --registry=https://registry.yarnpkg.com prisma@7.9.1 \
   && cp -a /opt/prisma-tools/node_modules/. /app/node_modules/
 
 # migrate + seed automatiques (ré-exécutables sans risque : le seed supprime
