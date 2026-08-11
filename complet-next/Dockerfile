@@ -1,8 +1,14 @@
 # ============================================================
 # complet-next — Kunicia (Next.js full-stack, port 3000)
-# Multi-stage : pnpm install + prisma generate + next build
+# Multi-stage : npm ci + prisma generate + next build
 # (output standalone), puis runtime léger + CLI prisma pour
 # migrate + seed automatiques au démarrage.
+#
+# Registre : npmjs.org par défaut (aucun .npmrc copié) — c'est le
+# registre rapide et fiable sur le builder Voisilab. Le .npmrc local
+# (npmmirror) ne doit pas être embarqué dans l'image : npmmirror est
+# trop lent/instable côté Voisilab. package-lock.json (registre npmjs)
+# est committé pour un `npm ci` déterministe.
 # ============================================================
 
 # ---------- Étape 1 : build ----------
@@ -12,6 +18,11 @@ WORKDIR /app
 ENV CI=true
 ENV NODE_OPTIONS=--max-old-space-size=4096
 
+# placeholder requis par prisma generate (prisma.config.ts lit DATABASE_URL) ;
+# aucune vraie URL n'est au build (.env exclu) — l'URL réelle vient des
+# variables d'environnement Voisilab au runtime uniquement.
+ENV DATABASE_URL=postgresql://placeholder:placeholder@localhost:5432/placeholder
+
 # NEXT_PUBLIC_* sont inlinées dans le bundle au build :
 #  - NEXT_PUBLIC_API_URL=/api (le Next sert lui-même son API)
 #  - NEXT_PUBLIC_APP_URL = origine publique encodée dans les QR cages
@@ -20,17 +31,13 @@ ARG NEXT_PUBLIC_APP_URL=http://localhost:3000
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_APP_URL=$NEXT_PUBLIC_APP_URL
 
-# le réseau du build bloque npmjs.org — on force le miroir npmmirror (cf. .npmrc)
-ENV COREPACK_NPM_REGISTRY=https://registry.npmmirror.com
-RUN corepack enable && corepack prepare pnpm@11.18.0 --activate
-
-COPY .npmrc package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-RUN pnpm install --frozen-lockfile
+COPY package.json package-lock.json ./
+RUN npm ci --no-audit --no-fund
 
 COPY . .
 # client Prisma généré localement (lib/generated, gitignoré → généré ici)
-RUN pnpm exec prisma generate
-RUN pnpm build
+RUN npx prisma generate
+RUN npm run build
 
 # ---------- Étape 2 : runtime ----------
 FROM node:24-alpine AS runtime
@@ -52,7 +59,7 @@ COPY --from=build /app/lib/generated ./lib/generated
 # CLI prisma (devDependency absente du standalone) — install npm réalisée
 # dans un prefix séparé puis copiée à plat (layout npm réel, pas de symlinks
 # pnpm) ; ne touche pas au node_modules tracé du standalone.
-RUN npm install --prefix /opt/prisma-tools --no-save --registry=https://registry.npmmirror.com prisma@7.9.1 \
+RUN npm install --prefix /opt/prisma-tools --no-save prisma@7.9.1 \
   && cp -a /opt/prisma-tools/node_modules/. /app/node_modules/
 
 # migrate + seed automatiques (ré-exécutables sans risque : le seed supprime
