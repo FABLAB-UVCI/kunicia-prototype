@@ -48,7 +48,7 @@ export default function AdminPage() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between gap-4">
-        <h1 className="text-xl font-semibold">Administration</h1>
+        <h1 className="text-xl font-semibold">Éleveurs inscrits</h1>
       </div>
 
       {erreur && <p className="text-sm text-destructive">{erreur}</p>}
