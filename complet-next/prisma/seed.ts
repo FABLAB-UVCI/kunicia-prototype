@@ -7,7 +7,7 @@
  * données sont d'abord supprimées avant d'être recréées — n'affecte aucun
  * autre compte.
  *
- * Usage : npx ts-node prisma/seed.ts
+ * Usage : node --import ./prisma/resolve-typescript.mjs prisma/seed.ts
  */
 import * as bcrypt from 'bcryptjs';
 
@@ -28,8 +28,8 @@ import type { LapinModel } from '../lib/generated/prisma/models/Lapin';
 
 const EMAIL_TEST = 'test@gmail.com';
 const MOT_DE_PASSE_TEST = '12345678';
-const EMAIL_ADMIN = 'admin@kunicia.app';
-const MOT_DE_PASSE_ADMIN = 'admin1234';
+const EMAIL_ADMIN = 'admin@gmail.com';
+const MOT_DE_PASSE_ADMIN = '12345678';
 const SALT_ROUNDS = 12;
 
 const adapter = new PrismaPg({

@@ -69,4 +69,4 @@ RUN npm install --prefix /opt/prisma-tools --no-save --registry=https://registry
 # (recrée uniquement les données du compte de démo). Le serveur Next démarre
 # en parallèle et répond au probe ; les données sont prêtes quelques secondes
 # après (visible dans les logs : "==> migrate+seed OK").
-CMD ["sh", "-c", "(echo '==> migrate deploy (arriere-plan)'; until node /app/node_modules/prisma/build/index.js migrate deploy; do echo '==> DB pas prete, nouvelle tentative dans 5s'; sleep 5; done && echo '==> seed' && node prisma/seed.ts && echo '==> migrate+seed OK') & node server.js"]
+CMD ["sh", "-c", "(echo '==> migrate deploy (arriere-plan)'; until node /app/node_modules/prisma/build/index.js migrate deploy; do echo '==> DB pas prete, nouvelle tentative dans 5s'; sleep 5; done && echo '==> seed' && node --import ./prisma/resolve-typescript.mjs prisma/seed.ts && echo '==> migrate+seed OK') & node server.js"]
