@@ -1,8 +1,12 @@
+export type Role = "ADMIN" | "ELEVEUR";
+
 export interface AuthUser {
   id: string;
   nom: string;
   nomFerme: string;
   email: string;
+  role: Role;
+  actif: boolean;
 }
 
 export interface RegisterPayload {

@@ -35,6 +35,11 @@ export async function POST(request: NextRequest) {
     return erreurApi(401, "Identifiants invalides");
   }
 
+  // compte bloqué par un administrateur : la connexion est refusée
+  if (!utilisateur.actif) {
+    return erreurApi(403, "Ce compte a été désactivé");
+  }
+
   const accessToken = await signerToken({
     sub: utilisateur.id,
     email: utilisateur.email,
@@ -47,6 +52,8 @@ export async function POST(request: NextRequest) {
       nom: utilisateur.nom,
       nomFerme: utilisateur.nomFerme,
       email: utilisateur.email,
+      role: utilisateur.role,
+      actif: utilisateur.actif,
     },
   });
 }

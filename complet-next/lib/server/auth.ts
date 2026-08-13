@@ -62,7 +62,14 @@ export async function getSessionUser(): Promise<AuthUser | null> {
     const { payload } = await jwtVerify(token, secret());
     const utilisateur = await prisma.utilisateur.findUnique({
       where: { id: payload.sub as string },
-      select: { id: true, nom: true, nomFerme: true, email: true },
+      select: {
+        id: true,
+        nom: true,
+        nomFerme: true,
+        email: true,
+        role: true,
+        actif: true,
+      },
     });
     return utilisateur;
   } catch {
@@ -76,6 +83,18 @@ export async function exigerSession(): Promise<AuthUser | NextResponse> {
   const utilisateur = await getSessionUser();
   if (!utilisateur) {
     return erreurApi(401, "Non authentifié");
+  }
+  return utilisateur;
+}
+
+// pour les routes d'administration : session valide ET rôle ADMIN exigés
+export async function exigerAdmin(): Promise<AuthUser | NextResponse> {
+  const utilisateur = await getSessionUser();
+  if (!utilisateur) {
+    return erreurApi(401, "Non authentifié");
+  }
+  if (utilisateur.role !== "ADMIN") {
+    return erreurApi(403, "Accès réservé à l'administration");
   }
   return utilisateur;
 }

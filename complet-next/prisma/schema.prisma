@@ -21,6 +21,10 @@ model Utilisateur {
   nomFerme      String
   email         String   @unique
   motDePasse    String
+  // ADMIN = accès à la partie administration de la plateforme ; actif=false
+  // bloque la connexion (gestion des comptes par l'admin)
+  role          Role     @default(ELEVEUR)
+  actif         Boolean  @default(true)
   createdAt     DateTime @default(now())
 
   lapins        Lapin[]
@@ -106,6 +110,11 @@ model Lapin {
 enum Sexe {
   MALE
   FEMELLE
+}
+
+enum Role {
+  ELEVEUR
+  ADMIN
 }
 
 enum StatutLapin {

@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
         email: parse.data.email,
         motDePasse: motDePasseHash,
       },
-      select: { id: true, nom: true, nomFerme: true, email: true },
+      select: { id: true, nom: true, nomFerme: true, email: true, role: true, actif: true },
     });
 
     const accessToken = await signerToken({

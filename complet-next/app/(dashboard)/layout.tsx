@@ -18,6 +18,7 @@ import {
   ShoppingCart,
   Syringe,
   Wallet,
+  ShieldCheck,
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
@@ -142,6 +143,27 @@ export default function DashboardLayout({
               </div>
             </div>
           ))}
+
+          {utilisateur?.role === "ADMIN" && (
+            <div className="md:mt-4">
+              <p className="hidden px-3 pb-1 text-xs font-medium tracking-wide text-muted-foreground/70 uppercase md:block">
+                Plateforme
+              </p>
+              <div className="flex gap-1 md:flex-col">
+                <Link
+                  href="/admin"
+                  className={`flex items-center gap-2.5 rounded-lg border-l-2 px-3 py-2 text-sm whitespace-nowrap transition-colors ${
+                    pathname === "/admin" || pathname?.startsWith("/admin/")
+                      ? "border-primary bg-accent font-medium text-accent-foreground"
+                      : "border-transparent text-muted-foreground hover:border-border hover:bg-muted hover:text-foreground"
+                  }`}
+                >
+                  <ShieldCheck className="size-4 shrink-0" />
+                  Administration
+                </Link>
+              </div>
+            </div>
+          )}
         </nav>
         <main
           className="flex-1 overflow-y-auto bg-fixed bg-cover bg-center p-4"

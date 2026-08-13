@@ -17,6 +17,7 @@ try { process.loadEnvFile('.env.local'); } catch {}
 import { PrismaClient } from '../lib/generated/prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import {
+  Role,
   Sexe,
   StatutAccouplement,
   StatutLapin,
@@ -27,6 +28,8 @@ import type { LapinModel } from '../lib/generated/prisma/models/Lapin';
 
 const EMAIL_TEST = 'test@gmail.com';
 const MOT_DE_PASSE_TEST = '12345678';
+const EMAIL_ADMIN = 'admin@kunicia.app';
+const MOT_DE_PASSE_ADMIN = 'admin1234';
 const SALT_ROUNDS = 12;
 
 const adapter = new PrismaPg({
@@ -102,6 +105,23 @@ async function main() {
     },
   });
   console.log(`Compte créé : ${EMAIL_TEST} / ${MOT_DE_PASSE_TEST}`);
+
+  // --- Compte administrateur de la plateforme (sans données de ferme) ---
+  // upsert idempotent : mot de passe/role ré-affirmés à chaque seed, le
+  // compte n'est jamais supprimé ni recréé (contrairement au compte de test)
+  await prisma.utilisateur.upsert({
+    where: { email: EMAIL_ADMIN },
+    update: { role: Role.ADMIN, actif: true },
+    create: {
+      nom: 'Administrateur',
+      nomFerme: 'Plateforme Kunicia',
+      email: EMAIL_ADMIN,
+      motDePasse: await bcrypt.hash(MOT_DE_PASSE_ADMIN, SALT_ROUNDS),
+      role: Role.ADMIN,
+      actif: true,
+    },
+  });
+  console.log(`Compte admin : ${EMAIL_ADMIN} / ${MOT_DE_PASSE_ADMIN}`);
 
   // --- Races ---
   const [raceCalifornien, raceNeoZelandais, raceChinchilla, raceLocal] =
